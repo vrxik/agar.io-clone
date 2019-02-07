@@ -359,12 +359,6 @@ io.on('connection', function (socket) {
             socket.emit('serverMSG', 'Welcome back ' + currentPlayer.name);
             socket.broadcast.emit('serverMSG', currentPlayer.name + ' just logged in as admin!');
             currentPlayer.admin = true;
-        } else {
-            
-            // TODO: Actually log incorrect passwords.
-              console.log('[ADMIN] ' + currentPlayer.name + ' attempted to log in with incorrect password.');
-              socket.emit('serverMSG', 'Password incorrect, attempt logged.');
-             pool.query('INSERT INTO logging SET name=' + currentPlayer.name + ', reason="Invalid login attempt as admin"');
         }
     });
 
@@ -390,7 +384,7 @@ io.on('connection', function (socket) {
                     else {
                        console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name);
                     }
-                    socket.emit('serverMSG', 'User ' + users[e].name + ' was kicked by ' + currentPlayer.name);
+                    socket.emit('MSG', 'User ' + users[e].name + ' was kicked by ' + currentPlayer.name);
                     sockets[users[e].id].emit('kick', reason);
                     sockets[users[e].id].disconnect();
                     users.splice(e, 1);
